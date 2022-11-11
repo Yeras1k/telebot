@@ -40,7 +40,7 @@ def second(message):
             keyboard.add('Маршрутный лист')
 
     elif message.text == 'Куратор':
-        msg = bot.send_message(message.chat.id, f"Введите пароль кураторов", reply_markup=keyboard)
+        msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
     else:
         bot.send_message(message.chat.id,'Я не понял')
