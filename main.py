@@ -15,7 +15,7 @@ db_object = db_connection.cursor()
 
 def input_data(signup):
     x = signup.text.split()
-    bot.send_message(signup.chat.id, x)
+    bot.send_message(signup.chat.id, f"{x}")
     db_connection.commit()
 
 @bot.message_handler(commands=["start"])
