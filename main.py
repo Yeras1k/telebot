@@ -23,7 +23,7 @@ def first(message):
     keyboard.add('Ученик')
     keyboard.add('Куратор')
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
-    bot.register_next_step_handler(send, ыусщтв)
+    bot.register_next_step_handler(send, second)
 
 def second(message):
     if message.text == 'Ученик':
