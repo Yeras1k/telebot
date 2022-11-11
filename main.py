@@ -15,7 +15,6 @@ db_object = db_connection.cursor()
 
 def input_data(signup):
     x = signup.text.split()
-    db_object.execute(f"INSERT INTO students(name, surname, class, litter, email, phone) VALUES ('{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
     bot.send_message(signup.chat.id, x)
     db_connection.commit()
 
