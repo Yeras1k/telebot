@@ -29,8 +29,7 @@ def start(message):
 def input_data(message):
     user_id = message.from_user.id
     data1 = message.text.split()
-    bot.send_message(message.chat.id, f"{data1[2]}")
-    db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES (%i, %s, %s, %t, %s, %s, %t)", (user_id, data1[0], data1[1], data1[2], data1[3], data1[4], data1[5]))
+    db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES ({user_id}, '{data1[0]}', '{data1[1]}', '{int(data1[2])}', '{data1[3]}', '{data1[4]}', {int(data1[5])})"
     db_connection.commit()
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
