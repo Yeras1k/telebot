@@ -17,9 +17,9 @@ curator_password = "SeniorsTop"
 
 @bot.message_handler(commands=["start"])
 def first(message):
-    keyboard = types.InLineKeyboardMarkup()
-    student = types.InLineKeyboardMarkup(text = "Ученик", callback_data = 'student')
-    curator = types.InLineKeyboardMarkup(text = "Куратор", callback_data = 'curator')
+    keyboard = telebot.types.InlineKeyboardMarkup()
+    student = telebot.types.InlineKeyboardMarkup(text = "Ученик", callback_data = 'student')
+    curator = telebot.types.InlineKeyboardMarkup(text = "Куратор", callback_data = 'curator')
     keyboard.add(student, curator)
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
