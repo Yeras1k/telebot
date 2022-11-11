@@ -19,7 +19,7 @@ db_object = db_connection.cursor()
 
 @bot.message_handler(commands=["start"])
 def first(message):
-    keyboard = types.ReplyKeyboardMarkup(True,False)
+    keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
     keyboard.add('Ученик')
     keyboard.add('Куратор')
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
