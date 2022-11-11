@@ -27,6 +27,12 @@ def first(message):
 def second(message):
     if message.text == 'Ученик':
         keyboard.add('Cancel')
+        keyboard.add('Расписание')
+        if message.text == 'Расписание':
+            
+        keyboard.add('Мероприятия')
+        keyboard.add('Клубная деятельность/олимпиадная подготовка')
+        keyboard.add('Маршрутный лист')
         user_id = message.from_user.id
         username = message.from_user.username
         db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
