@@ -48,6 +48,7 @@ def input_data_student(message):
     if len(x) == 6:
         db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
+        db_object.close()
         msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
         bot.register_next_step_handler(msg, main_s)
     else:
@@ -73,6 +74,7 @@ def input_data_curator(message):
     if len(x) == 6:
         db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
+        db_object.close()
         result = check_curator(message.from_user.id)
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
@@ -87,12 +89,16 @@ def input_data_curator(message):
 def check_student(id):
     db_object.execute(f"SELECT userid FROM students WHERE userid = {id}")
     result = db_object.fetchone()
+    db_object.close()
     return result
+
 
 def check_curator(id):
     db_object.execute(f"SELECT curid FROM curators WHERE curid = {id}")
     result = db_object.fetchone()
+    db_object.close()
     return result
+
 
 def main_s(message):
     bot.send_message(message.chat.id, f"Пошел найхуй")
