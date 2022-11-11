@@ -20,7 +20,7 @@ def start(message):
     user_id = message.from_user.id
     username = message.from_user.username
     bot.reply_to(message, f"Hello, {message.from_user.first_name}!")
-    db_object.execute(f"SELECT id FROM students WHERE id = {user_id}")
+    db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
     result = db_object.fetchone()
     if not result:
         msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
@@ -30,7 +30,7 @@ def input_data(message):
     user_id = message.from_user.id
     data1 = message.text.split()
     bot.send_message(message.chat.id, f"{data1[2]}")
-    db_object.execute(f"INSERT INTO students(id, name, surname, class, litter, email, phone) VALUES (%i, %s, %s, %t, %s, %s, %t)", (user_id, data1[0], data1[1], data1[2], data1[3], data1[4], data1[5]))
+    db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES (%i, %s, %s, %t, %s, %s, %t)", (user_id, data1[0], data1[1], data1[2], data1[3], data1[4], data1[5]))
     db_connection.commit()
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
