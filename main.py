@@ -120,7 +120,7 @@ def main_s(message):
         db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
         result = db_object.fetchone()
         listToString(result)
-        bot.send_message(message.message.chat.id, result)
+        bot.send_message(message.chat.id, result)
 
 def main_curator(message):
     bot.send_message(message.message.chat.id, "Нажмите что нибудь")
