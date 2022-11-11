@@ -21,7 +21,7 @@ def first(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
     keyboard.add('Ученик')
     keyboard.add('Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=null)
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=remove_keyboard)
     bot.register_next_step_handler(send, second)
 
 def second(message):
