@@ -34,7 +34,7 @@ def second(message):
         db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
         result = db_object.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=remove_keyboard)
             bot.register_next_step_handler(msg, input_data)
     else:
         bot.send_message(message.chat.id,'Я не понял')
