@@ -29,8 +29,8 @@ def start(message):
         db_object.execute(f"INSERT INTO students(id) VALUES ('{user_id}')")
         msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email в этой последовательности")
         bot.register_next_step_handler(msg, input_data)
-        input_data(msg)
-        
+        input_data(message)
+
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
