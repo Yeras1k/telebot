@@ -2,6 +2,7 @@ import os
 import telebot
 import logging
 import psycopg2
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telebot import types
 from config import *
 from flask import Flask, request
@@ -20,7 +21,7 @@ curator_password = "SeniorsTop"
 def first(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
     keyboard.row('Ученик', 'Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=ReplyKeyboardRemove())
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=telebot.types.ReplyKeyboardRemove())
     bot.register_next_step_handler(send, second)
 
 def second(message):
