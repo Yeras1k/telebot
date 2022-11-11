@@ -33,7 +33,7 @@ def second(message):
             msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
             bot.register_next_step_handler(msg, main_s)
 
-    if ьуыыфпуюеуче == 'Куратор':
+    if message.text == 'Куратор':
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
 
