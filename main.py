@@ -48,7 +48,7 @@ def input_data_student(message):
     if len(x) == 6:
         db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
-        c = check(user_id)
+        c = check_student(user_id)
         if not c:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
             bot.register_next_step_handler(msg, first)
@@ -100,18 +100,18 @@ def check_curator(id):
     return result
 
 def main_student(message):
-        keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
-        keyboard.add('Расписание')
-        keyboard.add('Мероприятия')
-        keyboard.add('Клубная деятельность/олимпиадная подготовка')
-        keyboard.add('Маршрутный лист')
+    keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
+    keyboard.add('Расписание')
+    keyboard.add('Мероприятия')
+    keyboard.add('Клубная деятельность/олимпиадная подготовка')
+    keyboard.add('Маршрутный лист')
 
 def main_curator(message):
-        keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
-        keyboard.add('Расписание')
-        keyboard.add('Мероприятия')
-        keyboard.add('Клубная деятельность/олимпиадная подготовка')
-        keyboard.add('Маршрутный лист')
+    keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
+    keyboard.add('Расписание')
+    keyboard.add('Мероприятия')
+    keyboard.add('Клубная деятельность/олимпиадная подготовка')
+    keyboard.add('Маршрутный лист')
 
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
