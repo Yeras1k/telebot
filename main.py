@@ -92,6 +92,7 @@ def check_curator(id):
     return result
 
 def main_student(message):
+    bot.send_message(message.chat.id, f"Пошел найхуй")
     keyboard = telebot.types.ReplyKeyboardMarkup(True, False)
     keyboard.add('Расписание')
     keyboard.add('Мероприятия')
