@@ -17,10 +17,16 @@ def start(message):
     user_id = message.from_user.id
     username = message.from_user.username
     bot.reply_to(message, f"Hello, {message.from_user.first_name}!")
-
-@bot.message_handler(content_types=["text"])
-def message_from_user(message):
-    bot.send_message(message.chat.id, "Простите, я вас не понял")
+    db_object.execute(f"SELECT id FROM students WHERE id = {user_id}")
+    result = db_object.fetchone()
+    if not result:
+        db_object.execute(f"INSERT INTO students(id) VALUES ('{user_id}')")
+        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email в этой последовательности")
+        bot.register_next_step_handler(msg, input_data)
+        def input_data(message):
+            x = message.text.split()
+            db_object.execute(f"INSERT INTO students(name, surname, class, litter, email) VALUES ('{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}')")
+            db_connection.commit()
 
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
