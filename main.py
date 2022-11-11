@@ -115,10 +115,21 @@ def check_curator(id):
 
 
 def main_s(message):
-    bot.send_message(message.message.chat.id, "Нажмите что нибудь")
+    if message.text == 'Расписание':
+        id = message.from_user.id
+        db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
+        result = db_object.fetchone()
+        listToString(result)
+        bot.send_message(message.message.chat.id, result)
 
 def main_curator(message):
     bot.send_message(message.message.chat.id, "Нажмите что нибудь")
+
+def listToString(s):
+    str1 = ""
+    for ele in s:
+        str1 += ele
+    return str1
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
