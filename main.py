@@ -16,16 +16,25 @@ db_object = db_connection.cursor()
 
 
 @bot.message_handler(commands=["start"])
-def start(message):
-    user_id = message.from_user.id
-    username = message.from_user.username
-    bot.reply_to(message, f"Hello, {message.from_user.first_name}!")
-    db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
-    result = db_object.fetchone()
-    if not result:
-        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
-        bot.register_next_step_handler(msg, input_data)
+def first(message):
+    keyboard = types.ReplyKeyboardMarkup(True,False)
+    keyboard.add('Ученик')
+    keyboard.add('Куратор')
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
+    bot.register_next_step_handler(send, ыусщтв)
 
+def second(message):
+    if message.text == 'Ученик':
+        keyboard.add('Cancel')
+        user_id = message.from_user.id
+        username = message.from_user.username
+        db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
+        result = db_object.fetchone()
+        if not result:
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
+            bot.register_next_step_handler(msg, input_data)
+    else:
+        bot.send_message(message.chat.id,'Я не понял')
 def input_data(message):
     user_id = message.from_user.id
     data1 = message.text.split()
