@@ -21,13 +21,12 @@ def first(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
     keyboard.add('Ученик')
     keyboard.add('Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=markup)
     bot.register_next_step_handler(send, second)
 
 def second(message):
     if message.text == 'Ученик':
         user_id = message.from_user.id
-        db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
         result = check_student(user_id)
         if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
