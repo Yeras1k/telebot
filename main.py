@@ -38,7 +38,7 @@ def second(message):
             service.row('Мероприятия')
             service.row('Клубная деятельность')
             msg = bot.send_message(message.chat.id, f"Успешно авторизовались", reply_markup = service)
-            bot.register_next_step_handler(msg, main_s)
+            bot.register_next_step_handler(msg, main)
 
     if message.text == 'Куратор':
         a = telebot.types.ReplyKeyboardRemove()
@@ -59,7 +59,7 @@ def input_data_student(message):
         service.row('Мероприятия')
         service.row('Клубная деятельность')
         msg = bot.send_message(message.chat.id, f"Успешно авторизовались", reply_markup = service)
-        bot.register_next_step_handler(msg, main_s)
+        bot.register_next_step_handler(msg, main)
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_student)
@@ -114,7 +114,7 @@ def check_curator(id):
     return result
 
 
-def main_s(message):
+def main(message):
     if message.text == 'Расписание':
         id = message.from_user.id
         db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
@@ -127,8 +127,9 @@ def main_curator(message):
 
 def listToString(s):
     str1 = ""
-    for ele in s:
-        str1 += ele
+    i = 0
+    for i in s:
+        str1 += i
     return str1
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
