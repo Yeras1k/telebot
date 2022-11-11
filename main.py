@@ -26,10 +26,11 @@ def first(message):
 
 def second(message):
     if message.text == 'Ученик':
+        keyboard = types.ReplyKeyboardMarkup(True,False)
         keyboard.add('Cancel')
         keyboard.add('Расписание')
         if message.text == 'Расписание':
-            
+        
         keyboard.add('Мероприятия')
         keyboard.add('Клубная деятельность/олимпиадная подготовка')
         keyboard.add('Маршрутный лист')
