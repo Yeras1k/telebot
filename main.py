@@ -33,6 +33,7 @@ def second(message):
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         if result == True:
+            msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
             bot.register_next_step_handler(msg, main_student)
 
     elif message.text == 'Куратор':
@@ -113,7 +114,7 @@ def main_curator(message):
         keyboard.add('Клубная деятельность/олимпиадная подготовка')
         keyboard.add('Маршрутный лист')
 
-        
+
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
     json_string = request.get_data().decode("utf-8")
