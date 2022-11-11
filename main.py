@@ -23,13 +23,12 @@ def start(message):
     db_object.execute(f"SELECT id FROM students WHERE id = {user_id}")
     result = db_object.fetchone()
     if not result:
-        db_object.execute(f"INSERT INTO students(id) VALUES ('{user_id}')")
         msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
         bot.register_next_step_handler(msg, input_data)
 
 def input_data(message):
     x = message.text.split()
-    bot.send_message(message.chat.id, f"{x}")
+    db_object.execute(f"INSERT INTO students(id, name, surname, class, litter, email, phone) VALUES ({user_id}, '{x[0]}', '{x[1]}', {x[2]}, '{x[3]}', '{x[4]}', {x[5]})")
     db_connection.commit()
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
