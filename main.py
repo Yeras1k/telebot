@@ -29,7 +29,7 @@ def start(message):
 
 def input_data(message):
     x = message.text.split()
-    bot.send_message(message.chat.id, f"{x}")
+    bot.send_message(message.chat.id, x)
     db_connection.commit()
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
