@@ -19,8 +19,7 @@ curator_password = "SeniorsTop"
 @bot.message_handler(commands=["start"])
 def first(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
-    keyboard.add('Ученик')
-    keyboard.add('Куратор')
+    keyboard.row('Ученик', 'Куратор')
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
 
@@ -31,7 +30,7 @@ def second(message):
         if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
-        if result == True:
+        else:
             msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
             bot.register_next_step_handler(msg, main_student)
 
