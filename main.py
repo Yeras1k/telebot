@@ -14,7 +14,7 @@ logger.setLevel(logging.DEBUG)
 db_connection = psycopg2.connect(DB_URI, sslmode="require")
 db_object = db_connection.cursor()
 
-
+curator_password = "SeniorsTop"
 
 @bot.message_handler(commands=["start"])
 def first(message):
@@ -27,25 +27,58 @@ def first(message):
 def second(message):
     if message.text == 'Ученик':
         keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
-        keyboard.add('Назад')
+        markup = telebot.types.InlineKeyboardMarkup()
+        markup.add(InlineKeyboardButton(text='Назад', callback_data='menu'))
+        bot.send_message(message.chat.id, "Привет", reply_markup = markup)
         user_id = message.from_user.id
         db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
         result = db_object.fetchone()
         if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
             bot.register_next_step_handler(msg, input_data_student)
+        if result:
+            keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
+            keyboard.row('Расписание', 'Мероприятия')
+            keyboard.add('Клубная деятельность/олимпиадная подготовка')
+            keyboard.add('Маршрутный лист')
+
+    elif message.text == 'Куратор':
+        msg = bot.send_message(message.chat.id, f"Введите пароль кураторов", reply_markup=keyboard)
+        bot.register_next_step_handler(msg, input_password_curator)
     else:
         bot.send_message(message.chat.id,'Я не понял')
 
 def input_data_student(message):
     user_id = message.from_user.id
     x = message.text.split()
-    db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
-    db_connection.commit()
-    keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
-    keyboard.row('Расписание', 'Мероприятия')
-    keyboard.add('Клубная деятельность/олимпиадная подготовка')
-    keyboard.add('Маршрутный лист')
+    if len(x) == 6:
+        db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
+        db_connection.commit()
+        keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
+        keyboard.row('Расписание', 'Мероприятия')
+        keyboard.add('Клубная деятельность/олимпиадная подготовка')
+        keyboard.add('Маршрутный лист')
+    else:
+        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз", reply_markup=keyboard)
+        bot.register_next_step_handler(msg, input_data_student)
+
+def input_password_curator(message):
+    if message.text == curator_password:
+        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
+        bot.register_next_step_handler(msg, input_data_curator)
+    else:
+        msg = bot.send_message(message.chat.id, f"Пароль не правильный")
+        bot.register_next_step_handler(msg, first)
+
+def input_data_curator(message):
+    user_id = message.from_user.id
+    x = message.text.split()
+    if len(x) == 6:
+        db_object.execute(f"INSERT INTO students(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
+        db_connection.commit()
+    else:
+        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз", reply_markup=keyboard)
+        bot.register_next_step_handler(msg, input_data_curator)
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
