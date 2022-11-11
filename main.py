@@ -15,7 +15,7 @@ db_object = db_connection.cursor()
 
 def input_data(signup):
     x = signup.text.split()
-    db_object.execute(f"INSERT INTO students(name, surname, class, litter, email) VALUES ('{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}')")
+    db_object.execute(f"INSERT INTO students(name, surname, class, litter, email, phone) VALUES ('{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
     db_connection.commit()
 
 @bot.message_handler(commands=["start"])
@@ -27,7 +27,7 @@ def start(message):
     result = db_object.fetchone()
     if not result:
         db_object.execute(f"INSERT INTO students(id) VALUES ('{user_id}')")
-        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email в этой последовательности")
+        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
         bot.register_next_step_handler(msg, input_data)
         input_data(message)
 
