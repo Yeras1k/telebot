@@ -2,7 +2,6 @@ import os
 import telebot
 import logging
 import psycopg2
-import translate
 from telebot import types
 from config import *
 from flask import Flask, request
