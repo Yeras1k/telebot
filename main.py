@@ -25,7 +25,7 @@ def first(message):
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
 
-@client.callback_query_handler(func = lambda call: True)
+@bot.callback_query_handler(func = lambda call: True)
 def answer(call):
     if call.data == 'student':
         user_id = message.from_user.id
