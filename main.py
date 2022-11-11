@@ -27,27 +27,28 @@ def second(message):
     if message.text == 'Ученик':
         user_id = message.from_user.id
         result = check_student(user_id)
-        if not result:
+        if result == False:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         else:
             msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
-            bot.register_next_step_handler(msg, main_student)
+            bot.register_next_step_handler(msg, main_s)
 
     elif message.text == 'Куратор':
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
     else:
-        bot.send_message(message.chat.id,'Я не понял')
-        bot.register_next_step_handler(msg, main_student)
+        msg = bot.send_message(message.chat.id,'Я не понял')
+        bot.register_next_step_handler(msg, first)
 
 def input_data_student(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})", autocommit=True)
+        db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
+        db_object.commit()
         msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
-        bot.register_next_step_handler(msg, main_student)
+        bot.register_next_step_handler(msg, main_s)
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_student)
@@ -69,7 +70,8 @@ def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})", autocommit=True)
+        db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
+        db_object.commit()
         result = check_curator(message.from_user.id)
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
@@ -91,7 +93,7 @@ def check_curator(id):
     result = db_object.fetchone()
     return result
 
-def main_student(message):
+def main_s(message):
     bot.send_message(message.chat.id, f"Пошел найхуй")
     keyboard = telebot.types.ReplyKeyboardMarkup(True, False)
     keyboard.add('Расписание')
