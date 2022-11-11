@@ -71,7 +71,7 @@ def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO students(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
+        db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
