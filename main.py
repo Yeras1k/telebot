@@ -94,21 +94,13 @@ def check_curator(id):
 
 def main_s(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    item_raspes = telebot.types.KeyboardMarkup('Расписание')
-    item_mer = telebot.types.KeyboardMarkup('Мероприятия')
-    item_club = telebot.types.KeyboardMarkup('Клубная деятельность/олимпиадная подготовка')
-    item_marsh = telebot.types.KeyboardMarkup('Маршрутный лист')
+    keyboard.add('Расписание', 'Мероприятия', 'Клубная деятельность', 'Маршрутный лист')
 
-    keyboard.add(item_raspes, item_mer, item_club, item_marsh)
     bot.send_message(call.message.chat.id, "Нажмите что нибудь")
 def main_curator(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    item_raspes = telebot.types.KeyboardMarkup('Расписание')
-    item_mer = telebot.types.KeyboardMarkup('Мероприятия')
-    item_club = telebot.types.KeyboardMarkup('Клубная деятельность/олимпиадная подготовка')
-    item_marsh = telebot.types.KeyboardMarkup('Маршрутный лист')
+    keyboard.add('Расписание', 'Мероприятия', 'Клубная деятельность', 'Маршрутный лист')
 
-    keyboard.add(item_raspes, item_mer, item_club, item_marsh)
     bot.send_message(call.message.chat.id, "Нажмите что нибудь")
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
