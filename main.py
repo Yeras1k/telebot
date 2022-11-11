@@ -26,11 +26,9 @@ def first(message):
 
 def second(message):
     if message.text == 'Ученик':
-        keyboard = types.ReplyKeyboardMarkup(True,False)
-        keyboard = types.ReplyKeyboardMarkup(True,False)
+        keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
         keyboard.add('Назад')
         user_id = message.from_user.id
-        username = message.from_user.username
         db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
         result = db_object.fetchone()
         if not result:
