@@ -104,7 +104,7 @@ def main_s(message):
     item_marsh = telebot.types.KeyboardMarkup('Маршрутный лист')
 
     keyboard.add(item_raspes, item_mer, item_club, item_marsh)
-
+    bot.send_message(call.message.chat.id, "Нажмите что нибудь")
 def main_curator(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
     item_raspes = telebot.types.KeyboardMarkup('Расписание')
@@ -113,7 +113,7 @@ def main_curator(message):
     item_marsh = telebot.types.KeyboardMarkup('Маршрутный лист')
 
     keyboard.add(item_raspes, item_mer, item_club, item_marsh)
-
+    bot.send_message(call.message.chat.id, "Нажмите что нибудь")
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
