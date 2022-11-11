@@ -29,8 +29,7 @@ def start(message):
 
 def input_data(message):
     x = message.text.split()
-    bot.send_message(message.chat.id, x)
-    db_connection.commit()
+    bot.send_message(message.chat.id, x[1])
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
