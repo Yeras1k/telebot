@@ -13,6 +13,11 @@ logger.setLevel(logging.DEBUG)
 db_connection = psycopg2.connect(DB_URI, sslmode="require")
 db_object = db_connection.cursor()
 
+def input_data(signup):
+    x = signup.text.split()
+    db_object.execute(f"INSERT INTO students(name, surname, class, litter, email) VALUES ('{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}')")
+    db_connection.commit()
+
 @bot.message_handler(commands=["start"])
 def start(message):
     user_id = message.from_user.id
@@ -24,11 +29,8 @@ def start(message):
         db_object.execute(f"INSERT INTO students(id) VALUES ('{user_id}')")
         msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email в этой последовательности")
         bot.register_next_step_handler(msg, input_data)
-        def input_data(message):
-            x = message.text.split()
-            db_object.execute(f"INSERT INTO students(name, surname, class, litter, email) VALUES ('{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}')")
-            db_connection.commit()
-
+        input_data(msg)
+        
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
