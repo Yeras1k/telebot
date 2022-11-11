@@ -33,7 +33,11 @@ def second(message):
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         else:
-            msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
+            service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+            service.row('Расписание')
+            service.row('Мероприятия')
+            service.row('Клубная деятельность')
+            msg = bot.send_message(message.chat.id, f"Успешно авторизовались", reply_markup = service)
             bot.register_next_step_handler(msg, main_s)
 
     if message.text == 'Куратор':
@@ -44,12 +48,16 @@ def second(message):
 
 
 def input_data_student(message):
+    service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+    service.row('Расписание')
+    service.row('Мероприятия')
+    service.row('Клубная деятельность')
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
         db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
-        msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
+        msg = bot.send_message(message.chat.id, f"Успешно авторизовались", reply_markup = service)
         bot.register_next_step_handler(msg, main_s)
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
@@ -58,11 +66,15 @@ def input_data_student(message):
 def input_password_curator(message):
     if message.text == curator_password:
         result = check_curator(message.from_user.id)
-        if not result:
+        if result == False:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Отчество, Шанырак, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_curator)
         else:
-            msg = bot.send_message(message.chat.id, f"Успешно авторизовались!")
+            service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+            service.row('Расписание')
+            service.row('Мероприятия')
+            service.row('Клубная деятельность')
+            msg = bot.send_message(message.chat.id, f"Успешно авторизовались!", reply_markup = service)
             bot.register_next_step_handler(msg, main_curator)
     else:
         msg = bot.send_message(message.chat.id, f"Пароль не правильный")
@@ -98,17 +110,10 @@ def check_curator(id):
 
 
 def main_s(message):
-    service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    service.row('Расписание')
-    service.row('Мероприятия')
-    service.row('Клубная деятельность')
-    bot.send_message(call.message.chat.id, "Нажмите что нибудь", reply_markup=service)
+    bot.send_message(message.message.chat.id, "Нажмите что нибудь")
+
 def main_curator(message):
-    service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    service.row('Расписание')
-    service.row('Мероприятия')
-    service.row('Клубная деятельность')
-    bot.send_message(call.message.chat.id, "Нажмите что нибудь", reply_markup=service)
+    bot.send_message(message.message.chat.id, "Нажмите что нибудь")
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
