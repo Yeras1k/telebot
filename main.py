@@ -18,10 +18,10 @@ db_object = db_connection.cursor()
 
 @bot.message_handler(commands=["start"])
 def first(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
     keyboard.add('Ученик')
     keyboard.add('Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=remove_keyboard)
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
 
 def second(message):
@@ -34,7 +34,7 @@ def second(message):
         db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
         result = db_object.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=remove_keyboard)
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
             bot.register_next_step_handler(msg, input_data)
     else:
         bot.send_message(message.chat.id,'Я не понял')
