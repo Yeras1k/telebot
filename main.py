@@ -48,15 +48,16 @@ def second(message):
 
 
 def input_data_student(message):
-    service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    service.row('Расписание')
-    service.row('Мероприятия')
-    service.row('Клубная деятельность')
+
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
         db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
+        service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+        service.row('Расписание')
+        service.row('Мероприятия')
+        service.row('Клубная деятельность')
         msg = bot.send_message(message.chat.id, f"Успешно авторизовались", reply_markup = service)
         bot.register_next_step_handler(msg, main_s)
     else:
@@ -91,7 +92,11 @@ def input_data_curator(message):
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
             bot.register_next_step_handler(msg, input_data_curator)
         else:
-            msg = bot.send_message(message.chat.id, f"Аккаунт успешно создан!")
+            service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+            service.row('Расписание')
+            service.row('Мероприятия')
+            service.row('Клубная деятельность')
+            msg = bot.send_message(message.chat.id, f"Аккаунт успешно создан!", reply_markup = service)
             bot.register_next_step_handler(msg, main_curator)
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
