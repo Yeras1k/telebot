@@ -17,16 +17,13 @@ curator_password = "SeniorsTop"
 
 @bot.message_handler(commands=["start"])
 def first(message):
-    keyboard = telebot.types.InlineKeyboardMarkup()
-    student = telebot.types.InlineKeyboardMarkup("Ученик", callback_data = 'student')
-    curator = telebot.types.InlineKeyboardMarkup("Куратор", callback_data = 'curator')
-    keyboard.add(student, curator)
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=keyboard)
+    keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
+    keyboard.row('Ученик', 'Куратор')
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
 
-@bot.callback_query_handler(func = lambda call: True)
-def answer(call):
-    if call.data == 'student':
+def second(message):
+    if message.text == 'Ученик':
         user_id = message.from_user.id
         result = check_student(user_id)
         if result == False:
@@ -36,8 +33,7 @@ def answer(call):
             msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
             bot.register_next_step_handler(msg, main_s)
 
-    if call.data == 'curator':
-        telebot.types.ReplyKeyboardRemove()
+    if ьуыыфпуюеуче == 'Куратор':
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
 
