@@ -20,7 +20,7 @@ curator_password = "SeniorsTop"
 def first(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
     keyboard.row('Ученик', 'Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=ReplyKeyboardRemove())
     bot.register_next_step_handler(send, second)
 
 def second(message):
@@ -46,7 +46,7 @@ def input_data_student(message):
     x = message.text.split()
     if len(x) == 6:
         db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
-        db_object.commit()
+        db_connection.commit()
         msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
         bot.register_next_step_handler(msg, main_s)
     else:
@@ -71,7 +71,7 @@ def input_data_curator(message):
     x = message.text.split()
     if len(x) == 6:
         db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
-        db_object.commit()
+        db_connection.commit()
         result = check_curator(message.from_user.id)
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
@@ -96,15 +96,13 @@ def check_curator(id):
 def main_s(message):
     bot.send_message(message.chat.id, f"Пошел найхуй")
     keyboard = telebot.types.ReplyKeyboardMarkup(True, False)
-    keyboard.add('Расписание')
-    keyboard.add('Мероприятия')
+    keyboard.row('Расписание', 'Мероприятия')
     keyboard.add('Клубная деятельность/олимпиадная подготовка')
     keyboard.add('Маршрутный лист')
 
 def main_curator(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True, False)
-    keyboard.add('Расписание')
-    keyboard.add('Мероприятия')
+    keyboard.row('Расписание', 'Мероприятия')
     keyboard.add('Клубная деятельность/олимпиадная подготовка')
     keyboard.add('Маршрутный лист')
 
