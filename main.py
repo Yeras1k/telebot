@@ -41,6 +41,8 @@ def second(message):
 
 def input_data(message):
     user_id = message.from_user.id
+    db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
+    db_connection.commit()
     keyboard = types.ReplyKeyboardMarkup(True,False)
     keyboard.row('Расписание', 'Мероприятия')
     keyboard.add('Клубная деятельность/олимпиадная подготовка')
