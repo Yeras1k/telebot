@@ -46,15 +46,9 @@ def input_data_student(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
-        db_connection.commit()
-        c = check_student(user_id)
-        if not c:
-            msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
-            bot.register_next_step_handler(msg, first)
-        else:
-            msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
-            bot.register_next_step_handler(msg, main_student)
+        db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})", autocommit=True)
+        msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
+        bot.register_next_step_handler(msg, main_student)
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_student)
@@ -76,8 +70,7 @@ def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
-        db_connection.commit()
+        db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})", autocommit=True)
         result = check_curator(message.from_user.id)
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
