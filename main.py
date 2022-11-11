@@ -61,7 +61,7 @@ def input_data_student(message):
 
 def input_password_curator(message):
     if message.text == curator_password:
-        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
+        msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
         bot.register_next_step_handler(msg, input_data_curator)
     else:
         msg = bot.send_message(message.chat.id, f"Пароль не правильный")
@@ -74,7 +74,7 @@ def input_data_curator(message):
         db_object.execute(f"INSERT INTO students(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
         db_connection.commit()
     else:
-        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз", reply_markup=keyboard)
+        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_curator)
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
