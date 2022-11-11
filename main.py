@@ -27,6 +27,7 @@ def start(message):
         bot.register_next_step_handler(msg, input_data)
 
 def input_data(message):
+    user_id = message.from_user.id
     x = message.text.split()
     db_object.execute(f"INSERT INTO students(id, name, surname, class, litter, email, phone) VALUES ({user_id}, '{x[0]}', '{x[1]}', {x[2]}, '{x[3]}', '{x[4]}', {x[5]})")
     db_connection.commit()
