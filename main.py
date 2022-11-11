@@ -21,6 +21,7 @@ def first(message):
     keyboard = telebot.types.InLineKeyboardMarkup()
     student = telebot.types.InLineKeyboardMarkup(text = "Ученик", callback_data = 'student')
     curator = telebot.types.InLineKeyboardMarkup(text = "Куратор", callback_data = 'curator')
+    keyboard.add(student, curator)
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
 
