@@ -18,6 +18,10 @@ def start(message):
     username = message.from_user.username
     bot.reply_to(message, f"Hello, {message.from_user.first_name}!")
 
+@bot.message_handler(content_types=["text"])
+def message_from_user(message):
+    bot.send_message(message.chat.id, "Простите, я вас не понял")
+
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
     json_string = request.get_data().decode("utf-8")
