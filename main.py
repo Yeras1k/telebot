@@ -28,8 +28,12 @@ def start(message):
 
 def input_data(message):
     x = message.text.split()
+<<<<<<< HEAD
     db_object.execute(f"INSERT INTO students(id, name, surname, class, litter, email, phone) VALUES ({user_id}, '{x[0]}', '{x[1]}', {x[2]}, '{x[3]}', '{x[4]}', {x[5]})")
     db_connection.commit()
+=======
+    bot.send_message(message.chat.id, x[1])
+>>>>>>> 20a782724016bc6b9d91a7679f7f4df8ad5686f3
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
