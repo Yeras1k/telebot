@@ -18,14 +18,29 @@ curator_password = "SeniorsTop"
 
 @bot.message_handler(commands=["start"])
 def first(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
-    keyboard.row('Ученик', 'Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
+    keyboard = telebot.types.InLineKeyboardMarkup()
+    student = telebot.types.InLineKeyboardMarkup(text = "Ученик", callback_data = 'student')
+    curator = telebot.types.InLineKeyboardMarkup(text = "Куратор", callback_data = 'curator')
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=keyboard)
     bot.register_next_step_handler(send, second)
 
+@client.callback_query_handler(func = lambda call: True)
+def answer(call):
+    if call.data == 'student':
+        user_id = message.from_user.id
+        result = check_student(user_id)
+        if result == False:
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
+            bot.register_next_step_handler(msg, input_data_student)
+        else:
+            msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
+            bot.register_next_step_handler(msg, main_s)
+
+    if call.data == 'curator':
+        keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item_back = telebot.types.KeyboardMarkup('Назад')
 def second(message):
     if message.text == 'Ученик':
-        telebot.types.ReplyKeyboardRemove()
         user_id = message.from_user.id
         result = check_student(user_id)
         if result == False:
@@ -98,17 +113,22 @@ def check_curator(id):
 
 
 def main_s(message):
-    bot.send_message(message.chat.id, f"Пошел найхуй")
-    keyboard = telebot.types.ReplyKeyboardMarkup(True, False)
-    keyboard.row('Расписание', 'Мероприятия')
-    keyboard.add('Клубная деятельность/олимпиадная подготовка')
-    keyboard.add('Маршрутный лист')
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+    item_raspes = telebot.types.KeyboardMarkup('Расписание')
+    item_mer = telebot.types.KeyboardMarkup('Мероприятия')
+    item_club = telebot.types.KeyboardMarkup('Клубная деятельность/олимпиадная подготовка')
+    item_marsh = telebot.types.KeyboardMarkup('Маршрутный лист')
+
+    keyboard.add(item_raspes, item_mer, item_club, item_marsh)
 
 def main_curator(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(True, False)
-    keyboard.row('Расписание', 'Мероприятия')
-    keyboard.add('Клубная деятельность/олимпиадная подготовка')
-    keyboard.add('Маршрутный лист')
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+    item_raspes = telebot.types.KeyboardMarkup('Расписание')
+    item_mer = telebot.types.KeyboardMarkup('Мероприятия')
+    item_club = telebot.types.KeyboardMarkup('Клубная деятельность/олимпиадная подготовка')
+    item_marsh = telebot.types.KeyboardMarkup('Маршрутный лист')
+
+    keyboard.add(item_raspes, item_mer, item_club, item_marsh)
 
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
