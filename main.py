@@ -33,16 +33,16 @@ def second(message):
         result = db_object.fetchone()
         if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
-            bot.register_next_step_handler(msg, input_data)
+            bot.register_next_step_handler(msg, input_data_student)
     else:
         bot.send_message(message.chat.id,'Я не понял')
 
-def input_data(message):
+def input_data_student(message):
     user_id = message.from_user.id
     x = message.text.split()
     db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
     db_connection.commit()
-    keyboard = types.ReplyKeyboardMarkup(True,False)
+    keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
     keyboard.row('Расписание', 'Мероприятия')
     keyboard.add('Клубная деятельность/олимпиадная подготовка')
     keyboard.add('Маршрутный лист')
