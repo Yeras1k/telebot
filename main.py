@@ -17,13 +17,16 @@ curator_password = "SeniorsTop"
 
 @bot.message_handler(commands=["start"])
 def first(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(True, True)
-    keyboard.row('Ученик', 'Куратор')
-    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=keyboard)
+    service = telebot.types.ReplyKeyboardMarkup(True, True)
+    service.row('Ученик')
+    service.row('Куратор')
+    send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=service)
     bot.register_next_step_handler(send, second)
 
 def second(message):
     if message.text == 'Ученик':
+        a = telebot.types.ReplyKeyboardRemove()
+        bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         user_id = message.from_user.id
         result = check_student(user_id)
         if result == False:
@@ -34,6 +37,8 @@ def second(message):
             bot.register_next_step_handler(msg, main_s)
 
     if message.text == 'Куратор':
+        a = telebot.types.ReplyKeyboardRemove()
+        bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
 
@@ -93,15 +98,17 @@ def check_curator(id):
 
 
 def main_s(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    keyboard.add('Расписание', 'Мероприятия', 'Клубная деятельность', 'Маршрутный лист')
-
-    bot.send_message(call.message.chat.id, "Нажмите что нибудь")
+    service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+    service.row('Расписание')
+    service.row('Мероприятия')
+    service.row('Клубная деятельность')
+    bot.send_message(call.message.chat.id, "Нажмите что нибудь", reply_markup=service)
 def main_curator(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-    keyboard.add('Расписание', 'Мероприятия', 'Клубная деятельность', 'Маршрутный лист')
-
-    bot.send_message(call.message.chat.id, "Нажмите что нибудь")
+    service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+    service.row('Расписание')
+    service.row('Мероприятия')
+    service.row('Клубная деятельность')
+    bot.send_message(call.message.chat.id, "Нажмите что нибудь", reply_markup=service)
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
 def redirect_message():
