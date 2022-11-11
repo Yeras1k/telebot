@@ -37,26 +37,10 @@ def answer(call):
             bot.register_next_step_handler(msg, main_s)
 
     if call.data == 'curator':
-        keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-        item_back = telebot.types.KeyboardMarkup('Назад')
-def second(message):
-    if message.text == 'Ученик':
-        user_id = message.from_user.id
-        result = check_student(user_id)
-        if result == False:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
-            bot.register_next_step_handler(msg, input_data_student)
-        else:
-            msg = bot.send_message(message.chat.id, f"Успешно авторизовались")
-            bot.register_next_step_handler(msg, main_s)
-
-    elif message.text == 'Куратор':
         telebot.types.ReplyKeyboardRemove()
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
-    else:
-        msg = bot.send_message(message.chat.id,'Я не понял')
-        bot.register_next_step_handler(msg, first)
+
 
 def input_data_student(message):
     user_id = message.from_user.id
