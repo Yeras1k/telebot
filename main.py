@@ -29,7 +29,7 @@ def start(message):
 def input_data(message):
     user_id = message.from_user.id
     data1 = message.text.split()
-    bot.send_message(message, f"{data1}")
+    bot.send_message(message.chat.id, f"{data1}")
     db_object.execute(f"INSERT INTO students(id, name, surname, class, litter, email, phone) VALUES ({user_id}, '{data1[0]}', '{data1[1]}', {data1[2]}, '{data1[3]}', '{data1[4]}', {data1[5]})")
     db_connection.commit()
 
