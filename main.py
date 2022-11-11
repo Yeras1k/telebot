@@ -36,6 +36,7 @@ def second(message):
             bot.register_next_step_handler(msg, main_s)
 
     elif message.text == 'Куратор':
+        telebot.types.ReplyKeyboardRemove()
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
     else:
