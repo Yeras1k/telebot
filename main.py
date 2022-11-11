@@ -2,7 +2,6 @@ import os
 import telebot
 import logging
 import psycopg2
-from pyTelegramBotAPI import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telebot import types
 from config import *
 from flask import Flask, request
