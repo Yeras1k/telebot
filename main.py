@@ -27,14 +27,11 @@ def first(message):
 def second(message):
     if message.text == 'Ученик':
         keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
-        markup = telebot.types.InlineKeyboardMarkup()
-        markup.add(InlineKeyboardButton(text='Назад', callback_data='menu'))
-        bot.send_message(message.chat.id, "Привет", reply_markup = markup)
         user_id = message.from_user.id
         db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
         result = db_object.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности", reply_markup=keyboard)
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, класс, литтер, email, номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         if result:
             keyboard = telebot.types.ReplyKeyboardMarkup(True,False)
@@ -59,7 +56,7 @@ def input_data_student(message):
         keyboard.add('Клубная деятельность/олимпиадная подготовка')
         keyboard.add('Маршрутный лист')
     else:
-        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз", reply_markup=keyboard)
+        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_student)
 
 def input_password_curator(message):
