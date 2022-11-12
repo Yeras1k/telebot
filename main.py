@@ -173,8 +173,17 @@ def main_curator(message):
 
 def main_teacher(message):
     if message.text == 'Класс':
-        bot.send_message(message.chat.id, "Введите сообщение")
+        msg = bot.send_message(message.chat.id, "Введите класс(класс и литер отделены пробелом)")
+        bot.register_next_step_handler(msg, usp)
 
+def usp(message):
+    x = message.text.split()
+    mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {x[0]}, litter = '{x[1]}'")
+    result = mycursor.fetchall()
+    reply_message = "- Ваш класс:\n"
+    for item in enumerate(result):
+        reply_message += f"{item[3].strip()} {item[1].strip()} {item[2]} .\n"
+    bot.reply_to(message, reply_message)
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
