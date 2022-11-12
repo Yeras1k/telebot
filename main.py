@@ -134,8 +134,6 @@ def input_data_teacher(message):
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_teacher)
 
-
-
 def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
