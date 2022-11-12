@@ -1,6 +1,7 @@
 import os
 import telebot
 import logging
+import psycopg2
 import mysql.connector
 from telebot import types
 from config import *
