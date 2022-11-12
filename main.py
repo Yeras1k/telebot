@@ -11,7 +11,10 @@ bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
+
 curator_password = "qwerty"
+teacher_password = "z123456"
+
 mydb = mysql.connector.connect(
     host = "containers-us-west-117.railway.app",
     port = "5550",
@@ -26,6 +29,7 @@ def first(message):
     service = telebot.types.ReplyKeyboardMarkup(True, True)
     service.row('Ученик')
     service.row('Куратор')
+    service.row('Учитель')
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=service)
     bot.register_next_step_handler(send, second)
 
@@ -53,6 +57,11 @@ def second(message):
         msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
         bot.register_next_step_handler(msg, input_password_curator)
 
+    if message.text == 'Учитель':
+        a = telebot.types.ReplyKeyboardRemove()
+        bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
+        msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
+        bot.register_next_step_handler(msg, input_password_teacher)
 
 def input_data_student(message):
     user_id = message.from_user.id
@@ -72,9 +81,11 @@ def input_data_student(message):
 
 def input_password_curator(message):
     if message.text == curator_password:
-        result = check_curator(message.from_user.id)
+        user_id = message.from_user.id
+        mycursor.execute(f'SELECT curid FROM curators WHERE curid = {user_id}')
+        result = mycursor.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Отчество, Шанырак, Email, Номер(все цифры слитно и через 8) в этой последовательности")
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Отчество, Шанырак, Email в этой последовательности")
             bot.register_next_step_handler(msg, input_data_curator)
         else:
             service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
@@ -85,13 +96,54 @@ def input_password_curator(message):
         msg = bot.send_message(message.chat.id, f"Пароль не правильный")
         bot.register_next_step_handler(msg, first)
 
+def input_password_teacher(message):
+    if message.text == teacher_password:
+        user_id = message.from_user.id
+        mycursor.execute(f'SELECT tid FROM teachers WHERE tid = {user_id}')
+        result = mycursor.fetchone()
+        if not result:
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Предмет, Email в этой последовательности")
+            bot.register_next_step_handler(msg, input_data_teacher)
+        else:
+            service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+            service.row('Класс')
+            msg = bot.send_message(message.chat.id, f"Успешно авторизовались!", reply_markup = service)
+            bot.register_next_step_handler(msg, main_teacher)
+    else:
+        msg = bot.send_message(message.chat.id, f"Пароль не правильный")
+        bot.register_next_step_handler(msg, first)
+
+
+def input_data_teacher(message):
+    user_id = message.from_user.id
+    x = message.text.split()
+    if len(x) == 4:
+        mycursor.execute(f"INSERT INTO teachers(tid, name, surname, subject, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}')")
+        mydb.commit()
+        db_object.execute(f"SELECT tid FROM teachers WHERE tid = {user_id}")
+        result = db_object.fetchone()
+        if not result:
+            msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз, введите еще раз")
+            bot.register_next_step_handler(msg, input_data_teacher)
+        else:
+            service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
+            service.row('Назначить мероприятие')
+            msg = bot.send_message(message.chat.id, f"Аккаунт успешно создан!", reply_markup = service)
+            bot.register_next_step_handler(msg, main_teacher)
+    else:
+        msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
+        bot.register_next_step_handler(msg, input_data_teacher)
+
+
+
 def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 5:
         mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}')")
         mydb.commit()
-        result = check_curator(message.from_user.id)
+        db_object.execute(f"SELECT curid FROM curators WHERE curid = {user_id}")
+        result = db_object.fetchone()
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
             bot.register_next_step_handler(msg, input_data_curator)
@@ -129,6 +181,12 @@ def main_curator(message):
     if message.text == 'Назначить мероприятие':
         msg = bot.send_message(message.chat.id, "Введите сообщение")
         bot.register_next_step_handler(msg, event)
+
+
+def main_teacher(message):
+
+
+
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
