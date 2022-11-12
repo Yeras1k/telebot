@@ -183,8 +183,8 @@ def main_curator(message):
 
 
 def main_teacher(message):
-
-
+    if message.text == 'Класс':
+        bot.send_message(message.chat.id, "Введите сообщение")
 
 
 def event(message):
