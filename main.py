@@ -126,8 +126,8 @@ def main(message):
         mycursor.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
         result = mycursor.fetchall()
         a = str(result[0][0]) + result[0][1]
-        file = a + '.png'
-        bot.send_photo(message.chat.id, f"{file}", "Расписание")
+        file = open(f"{a}" + '.png', 'rb')
+        bot.send_photo(message.chat.id, file, "Расписание")
 
 def main_curator(message):
     bot.send_message(message.message.chat.id, "Нажмите что нибудь")
