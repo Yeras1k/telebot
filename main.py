@@ -32,6 +32,7 @@ def first(message):
     send = bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}! Выберите роль", reply_markup=service)
     bot.register_next_step_handler(send, second)
 
+
 def second(message):
     if message.text == 'Ученик':
         user_id = message.from_user.id
