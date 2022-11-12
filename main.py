@@ -15,6 +15,7 @@ logger.setLevel(logging.DEBUG)
 
 mydb = mysql.connector.connect(
     host = "95.216.198.64",
+    port = "3306",
     user = "ibe",
     password = "7TtZEumT",
     database = "ibe_ddd"
