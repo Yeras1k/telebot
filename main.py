@@ -127,9 +127,8 @@ def main_curator(message):
 
 def listToString(s):
     str1 = ""
-    i = 0
-    for i in s:
-        str1 += i
+    for i in range(len(s)):
+        str1 += s[i]
     return str1
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
