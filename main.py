@@ -178,7 +178,7 @@ def main_teacher(message):
 
 def usp(message):
     x = message.text.split()
-    mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {x[0]}, litter = {str(x[1])}")
+    mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {x[0]}, litter = {(x[1])}")
     result = mycursor.fetchall()
     reply_message = "- Top stickers farmers:\n"
     for i in range(len(result)):
@@ -189,14 +189,15 @@ def usp(message):
 
 def progul(message):
     x = message.text.split()
+    a = mycursor.execute("SELECT curid FROM curators")
     allresult = []
     for i in range(len(x)):
         mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
         result = mycursor.fetchall()
         allresult.append(result)
     for i in range(len(allresult)):
-        bot.send_message(message.chat.id, f"{x[i][0]} {x[i][1]}")
-    bot.send_message(message.chat.id, "ОТСУТСВОВАЛИ")
+        bot.send_message(message., f"{x[i][0]} {x[i][1]}")
+    bot.send_message(a, "ОТСУТСВОВАЛИ")
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
