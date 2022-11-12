@@ -39,7 +39,7 @@ def second(message):
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         mycursor.execute(f'SELECT userid FROM students WHERE userid = {user_id}')
         result = mycursor.fetchone()
-        
+
         if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер(только на английском), Email в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
@@ -142,15 +142,15 @@ def input_data_curator(message):
     if len(x) == 5:
         mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}')")
         mydb.commit()
-        mycursor.execute(f"SELECT curid FROM curators WHERE curid = {user_id}")
+        mycursor.execute(f"SELECT curid FROM curators WHERE curid = {user_id}") #выбирает айди из базы данных
         result = mycursor.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
+            msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз") #выдает ошибку
             bot.register_next_step_handler(msg, input_data_curator)
         else:
             service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
             service.row('Назначить мероприятие')
-            msg = bot.send_message(message.chat.id, f"Аккаунт успешно создан!", reply_markup = service)
+            msg = bot.send_message(message.chat.id, f"Аккаунт успешно создан!", reply_markup = service) #создает аккаунт
             bot.register_next_step_handler(msg, main_curator)
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
@@ -187,6 +187,7 @@ def usp(message):
     bot.send_message(message.chat.id, reply_message)
     msg = bot.send_message(message.chat.id, "Введите id учеников которые отсутвовали на уроке через пробел")
     bot.register_next_step_handler(msg, progul)
+
 
 def progul(message):
     x = message.text.split()
