@@ -39,7 +39,7 @@ def second(message):
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         user_id = message.from_user.id
-        mycursor.execute("SELECT userid FROM students WHERE userid = f"{user_id}"")
+        mycursor.execute(f'SELECT userid FROM students WHERE userid = {user_id}')
         result = mycursor.fetchone()
         if result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
