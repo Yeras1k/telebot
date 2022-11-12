@@ -37,7 +37,7 @@ def second(message):
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         mycursor.execute(f'SELECT userid FROM students WHERE userid = (%i)', (user_id))
         result = mycursor.fetchone()
-        if result:
+        if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         else:
@@ -75,7 +75,7 @@ def input_data_student(message):
 def input_password_curator(message):
     if message.text == curator_password:
         result = check_curator(message.from_user.id)
-        if result == False:
+        if not result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Отчество, Шанырак, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_curator)
         else:
