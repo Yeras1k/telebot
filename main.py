@@ -125,7 +125,8 @@ def main(message):
         id = message.from_user.id
         mycursor.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
         result = mycursor.fetchall()
-        bot.send_message(message.chat.id, str(result))
+        a = str(result[0][0]) + result[0][1]
+        bot.send_message(message.chat.id, a)
 
 def main_curator(message):
     bot.send_message(message.message.chat.id, "Нажмите что нибудь")
