@@ -2,3 +2,4 @@ pyTelegramBotAPI
 flask
 psycopg2
 aiogram
+mysql-connector-python
