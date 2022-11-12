@@ -189,9 +189,11 @@ def usp(message):
 
 def usp(message):
     x = message.text.split()
+    allresult = []
     for i in range(len(x)):
         mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
-        result mycursor.fetchall()
+        result = mycursor.fetchall()
+        allresult = allresult + result
     for i in range(len(x)):
         mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
 
