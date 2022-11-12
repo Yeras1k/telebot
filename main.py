@@ -117,9 +117,9 @@ def check_curator(id):
 def main(message):
     if message.text == 'Расписание':
         id = message.from_user.id
-        db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
+        db_object.execute(f"SELECT * FROM students WHERE userid = {id}")
         result = db_object.fetchone()
-        bot.send_message(message.chat.id, f"{str(result[0])}")
+        bot.send_message(message.chat.id, f"{result[2]}")
 
 def main_curator(message):
     bot.send_message(message.message.chat.id, "Нажмите что нибудь")
