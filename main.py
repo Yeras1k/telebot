@@ -37,7 +37,7 @@ def second(message):
         mycursor.execute(f'SELECT userid FROM students WHERE userid = {user_id}')
         result = mycursor.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         else:
             service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
@@ -58,8 +58,8 @@ def input_data_student(message):
 
     user_id = message.from_user.id
     x = message.text.split()
-    if len(x) == 6:
-        mycursor.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
+    if len(x) == 5:
+        mycursor.execute(f"INSERT INTO students(userid, name, surname, class, litter, email) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}')")
         mydb.commit()
         service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
         service.row('Расписание')
@@ -91,8 +91,8 @@ def input_password_curator(message):
 def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
-    if len(x) == 6:
-        mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
+    if len(x) == 5:
+        mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}')")
         mydb.commit()
         result = check_curator(message.from_user.id)
         if not result:
