@@ -28,7 +28,8 @@ def second(message):
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         user_id = message.from_user.id
-        result = check_student(user_id)
+        db_object.execute(f"SELECT userid FROM students WHERE userid = {id}")
+        result = db_object.fetchone()
         if result == False:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
@@ -103,7 +104,7 @@ def input_data_curator(message):
         bot.register_next_step_handler(msg, input_data_curator)
 
 def check_student(id):
-    db_object.execute(f"SELECT 'userid' FROM students WHERE userid = {id}")
+    db_object.execute(f"SELECT userid FROM students WHERE userid = {id}")
     result = db_object.fetchone()
     return result
 
@@ -117,7 +118,7 @@ def check_curator(id):
 def main(message):
     if message.text == 'Расписание':
         id = message.from_user.id
-        result = db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
+        db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
         result = db_object.fetchall()
         bot.send_message(message.chat.id, f"{result}")
 
