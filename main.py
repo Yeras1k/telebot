@@ -178,14 +178,18 @@ def main_teacher(message):
 
 def usp(message):
     x = message.text.split()
-    mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {int(x[0])}, litter = '{(x[1])}'")
+    mycursor.execute("SELECT userid, name, surname FROM students WHERE class = %i, litter = %s", (x[0], x[1]))
     result = mycursor.fetchall()
     reply_message = "- Ваш класс:\n"
     for item in enumerate(result):
         reply_message += f"{item[3].strip()} {item[1].strip()} {item[2]} .\n"
     bot.reply_to(message, reply_message)
     msg = bot.send_message(message.chat.id, "Введите id учеников которые отсутвовали на уроке через пробел")
-    bot.register_next_step_handler(msg, usp)
+    bot.register_next_step_handler(msg, progul)
+
+def usp(message):
+    x = message.text.split()
+
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
     result = mycursor.fetchall()
