@@ -187,7 +187,7 @@ def usp(message):
     msg = bot.send_message(message.chat.id, "Введите id учеников которые отсутвовали на уроке через пробел")
     bot.register_next_step_handler(msg, progul)
 
-def usp(message):
+def progul(message):
     x = message.text.split()
     allresult = []
     for i in range(len(x)):
