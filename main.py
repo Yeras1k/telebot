@@ -12,7 +12,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
-
+curator_password = "123"
 mydb = mysql.connector.connect(
     host = "containers-us-west-117.railway.app",
     port = "5550",
@@ -32,9 +32,9 @@ def first(message):
 
 def second(message):
     if message.text == 'Ученик':
+        user_id = message.from_user.id
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
-        user_id = message.from_user.id
         mycursor.execute(f'SELECT userid FROM students WHERE userid = {user_id}')
         result = mycursor.fetchone()
         if result:
