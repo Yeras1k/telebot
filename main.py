@@ -55,7 +55,6 @@ def second(message):
 
 
 def input_data_student(message):
-
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 5:
