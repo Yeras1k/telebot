@@ -194,8 +194,6 @@ def usp(message):
         mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
         result = mycursor.fetchall()
         allresult = allresult + result
-    for i in range(len(x)):
-        mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
