@@ -78,9 +78,7 @@ def input_password_curator(message):
             bot.register_next_step_handler(msg, input_data_curator)
         else:
             service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-            service.row('Расписание')
-            service.row('Мероприятия')
-            service.row('Клубная деятельность')
+            service.row('Назначить мероприятие')
             msg = bot.send_message(message.chat.id, f"Успешно авторизовались!", reply_markup = service)
             bot.register_next_step_handler(msg, main_curator)
     else:
@@ -99,9 +97,7 @@ def input_data_curator(message):
             bot.register_next_step_handler(msg, input_data_curator)
         else:
             service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
-            service.row('Расписание')
-            service.row('Мероприятия')
-            service.row('Клубная деятельность')
+            service.row('Назначить мероприятие')
             msg = bot.send_message(message.chat.id, f"Аккаунт успешно создан!", reply_markup = service)
             bot.register_next_step_handler(msg, main_curator)
     else:
@@ -130,7 +126,21 @@ def main(message):
         bot.send_photo(message.chat.id, file, "Расписание")
 
 def main_curator(message):
-    bot.send_message(message.message.chat.id, "Нажмите что нибудь")
+    if message.text == 'Назначить мероприятие':
+        msg = bot.send_message(message.chat.id, "Введите сообщение")
+        bot.register_next_step_handler(msg, event)
+
+def event(message):
+    a = mycursor.execute("SELECT userid FROM students")
+    result = mycursor.fetchall()
+    for i in range(len(result)):
+        for j in range(len(result[i])):
+            bot.send_message(result[i][j], message.text)
+    msg = bot.send_message(message.chat.id, "Сообщение отправлено")
+    bot.register_next_step_handler(msg, main_curator)
+
+
+
 
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
