@@ -14,7 +14,7 @@ logger = telebot.logger
 logger.setLevel(logging.DEBUG)
 
 mydb = mysql.connector.connect(
-    host = "petropavl.site/cwp";
+    host = "petropavl.site";
     user = "ibe";
     password = "7TtZEumT";
     database = "ibe_ddd";
