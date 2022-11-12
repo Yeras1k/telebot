@@ -198,7 +198,7 @@ def progul(message):
         result = mycursor.fetchall()
         allresult.append(result)
     for i in range(len(allresult)):
-        bot.send_message(message., f"{allresult[i]}")
+        bot.send_message(message.chat.id, f"{allresult[i]}")
     bot.send_message(a, "ОТСУТСВОВАЛИ")
 
 def event(message):
