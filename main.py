@@ -178,7 +178,7 @@ def main_teacher(message):
 
 def usp(message):
     x = message.text.split()
-    mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {x[0]}, litter = '{x[1]}'")
+    mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {x[0]}, litter = "{x[1]}"")
     result = mycursor.fetchall()
     reply_message = "- Ваш класс:\n"
     for item in enumerate(result):
