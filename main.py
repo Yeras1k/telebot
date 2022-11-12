@@ -14,10 +14,10 @@ logger = telebot.logger
 logger.setLevel(logging.DEBUG)
 
 mydb = mysql.connector.connect(
-    host = "petropavl.site";
-    user = "ibe";
-    password = "7TtZEumT";
-    database = "ibe_ddd";
+    host = "petropavl.site",
+    user = "ibe",
+    password = "7TtZEumT",
+    database = "ibe_ddd"
 )
 mycursor = mydb.cursor()
 
