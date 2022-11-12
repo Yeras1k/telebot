@@ -37,7 +37,7 @@ def second(message):
         mycursor.execute(f'SELECT userid FROM students WHERE userid = {user_id}')
         result = mycursor.fetchone()
         if not result:
-            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email в этой последовательности")
+            msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер(только на английском), Email в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
         else:
             service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
