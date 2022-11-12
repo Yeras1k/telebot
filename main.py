@@ -1,10 +1,21 @@
 import os
 import telebot
 import logging
-import psycopg2
+import mysql.connector
 from telebot import types
 from config import *
 from flask import Flask, request
+
+
+
+mydb = mysql.connector.connect(
+  host="containers-us-west-112.railway.app",
+  user="root",
+  password="CFH6kF0jKWGJoiRuWKtc"
+  database="railway"
+)
+
+mycursor = mydb.cursor()
 
 bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
@@ -28,8 +39,8 @@ def second(message):
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
         user_id = message.from_user.id
-        db_object.execute(f"SELECT userid FROM students WHERE userid = {user_id}")
-        result = db_object.fetchone()
+        mycursor.execute("SELECT userid FROM students WHERE userid = f"{user_id}"")
+        result = mycursor.fetchone()
         if result:
             msg = bot.send_message(message.chat.id, f"Введите свое Имя, Фамилию, Класс, Литтер, Email, Номер(все цифры слитно и через 8) в этой последовательности")
             bot.register_next_step_handler(msg, input_data_student)
@@ -53,8 +64,8 @@ def input_data_student(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
-        db_connection.commit()
+        mycursor.execute(f"INSERT INTO students(userid, name, surname, class, litter, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', {x[2]},'{x[3]}', '{x[4]}', {x[5]})")
+        mydb.commit()
         service = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True)
         service.row('Расписание')
         service.row('Мероприятия')
@@ -86,8 +97,8 @@ def input_data_curator(message):
     user_id = message.from_user.id
     x = message.text.split()
     if len(x) == 6:
-        db_object.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
-        db_connection.commit()
+        mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email, phone) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}', {x[5]})")
+        mydb.commit()
         result = check_curator(message.from_user.id)
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
@@ -104,14 +115,14 @@ def input_data_curator(message):
         bot.register_next_step_handler(msg, input_data_curator)
 
 def check_student(id):
-    db_object.execute(f"SELECT userid FROM students WHERE userid = {id}")
-    result = db_object.fetchone()
+    mycursor.execute(f"SELECT userid FROM students WHERE userid = {id}")
+    result = mycursor.fetchone()
     return result
 
 
 def check_curator(id):
-    db_object.execute(f"SELECT curid FROM curators WHERE curid = {id}")
-    result = db_object.fetchone()
+    mycursor.execute(f"SELECT curid FROM curators WHERE curid = {id}")
+    result = mycursor.fetchone()
     return result
 
 
