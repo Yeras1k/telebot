@@ -181,8 +181,8 @@ def usp(message):
     mycursor.execute(f"SELECT userid, name, surname FROM students WHERE class = {x[0]}, litter = {str(x[1])}")
     result = mycursor.fetchall()
     reply_message = "- Top stickers farmers:\n"
-    for i, item in enumerate(result):
-        reply_message += f"{item[3].strip()} {item[1].strip()}) {item[2]}\n"
+    for i in range(len(result)):
+        reply_message += f"{item[i][0]} {item[i][1]}) {item[i][2]}\n"
     bot.send_message(message.chat.id, reply_message)
     msg = bot.send_message(message.chat.id, "Введите id учеников которые отсутвовали на уроке через пробел")
     bot.register_next_step_handler(msg, progul)
@@ -193,8 +193,10 @@ def progul(message):
     for i in range(len(x)):
         mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
         result = mycursor.fetchall()
-        allresult = allresult + result
-    for i in range(len(x)):
+        allresult.append(result)
+    for i in range(len(allresult)):
+        bot.send_message(message.chat.id, f"{x[i][0]} {x[i][1]}")
+    bot.send_message(message.chat.id, "ОТСУТСВОВАЛИ")
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
