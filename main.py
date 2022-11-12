@@ -119,7 +119,7 @@ def main(message):
         id = message.from_user.id
         result = db_object.execute(f"SELECT class, litter FROM students WHERE userid = {id}")
         result = db_object.fetchall()
-        bot.send_message(message.chat.id, f"{(result[0]+str(result[1]))}")
+        bot.send_message(message.chat.id, f"{result}")
 
 def main_curator(message):
     bot.send_message(message.message.chat.id, "Нажмите что нибудь")
