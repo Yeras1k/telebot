@@ -113,7 +113,7 @@ def check_student(id):
 def check_curator(id):
     mycursor.execute(f"SELECT curid FROM curators WHERE curid = {id}")
     result = mycursor.fetchone()
-    return result
+    return result[0][0]
 
 
 def main(message):
