@@ -59,7 +59,7 @@ def second(message):
     if message.text == 'Учитель':
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, 'Хорошо', reply_markup=a)
-        msg = bot.send_message(message.chat.id, f"Введите пароль кураторов")
+        msg = bot.send_message(message.chat.id, f"Введите пароль учителей")
         bot.register_next_step_handler(msg, input_password_teacher)
 
 def input_data_student(message):
@@ -119,8 +119,8 @@ def input_data_teacher(message):
     if len(x) == 4:
         mycursor.execute(f"INSERT INTO teachers(tid, name, surname, subject, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}')")
         mydb.commit()
-        db_object.execute(f"SELECT tid FROM teachers WHERE tid = {user_id}")
-        result = db_object.fetchone()
+        mycursor.execute(f"SELECT tid FROM teachers WHERE tid = {user_id}")
+        result = mycursor.fetchone()
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз, введите еще раз")
             bot.register_next_step_handler(msg, input_data_teacher)
@@ -141,8 +141,8 @@ def input_data_curator(message):
     if len(x) == 5:
         mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}')")
         mydb.commit()
-        db_object.execute(f"SELECT curid FROM curators WHERE curid = {user_id}")
-        result = db_object.fetchone()
+        mycursor.execute(f"SELECT curid FROM curators WHERE curid = {user_id}")
+        result = mycursor.fetchone()
         if not result:
             msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
             bot.register_next_step_handler(msg, input_data_curator)
@@ -154,17 +154,6 @@ def input_data_curator(message):
     else:
         msg = bot.send_message(message.chat.id, f"Что то пошло не так, попробуйте еще раз")
         bot.register_next_step_handler(msg, input_data_curator)
-
-def check_student(id):
-    db_object.execute(f"SELECT userid FROM students WHERE userid = {id}")
-    result = db_object.fetchone()
-    return result
-
-
-def check_curator(id):
-    mycursor.execute(f"SELECT curid FROM curators WHERE curid = {id}")
-    result = mycursor.fetchone()
-    return result[0][0]
 
 
 def main(message):
@@ -195,9 +184,6 @@ def event(message):
             bot.send_message(result[i][j], message.text)
     msg = bot.send_message(message.chat.id, "Сообщение отправлено")
     bot.register_next_step_handler(msg, main_curator)
-
-
-
 
 
 @server.route(f"/{BOT_TOKEN}", methods=["POST"])
