@@ -13,7 +13,12 @@ server = Flask(__name__)
 logger = telebot.logger
 logger.setLevel(logging.DEBUG)
 
-db_connection = psycopg2.connect(DB_URI, sslmode="require")
+db_connection = conn = psycopg2.connect(
+    host="containers-us-west-89.railway.app",
+    database="railway",
+    user="postgres",
+    password="3FsStuIdSScdHsm6KBxn")
+    
 db_object = db_connection.cursor()
 curator_password = "SeniorsTop"
 
