@@ -103,7 +103,7 @@ def input_data_curator(message):
         bot.register_next_step_handler(msg, input_data_curator)
 
 def check_student(id):
-    db_object.execute(f"SELECT userid FROM students WHERE userid = {id}")
+    db_object.execute(f"SELECT 'userid' FROM students WHERE userid = {id}")
     result = db_object.fetchone()
     return result
 
