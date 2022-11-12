@@ -182,7 +182,7 @@ def usp(message):
     result = mycursor.fetchall()
     reply_message = "- Top stickers farmers:\n"
     for i, item in enumerate(result):
-        reply_message += f"{item[3].strip()} ({item[1].strip()}) {item[2]}\n"
+        reply_message += f"{item[3].strip()} {item[1].strip()}) {item[2]}\n"
     bot.send_message(message.chat.id, reply_message)
     msg = bot.send_message(message.chat.id, "Введите id учеников которые отсутвовали на уроке через пробел")
     bot.register_next_step_handler(msg, progul)
