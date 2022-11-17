@@ -181,9 +181,9 @@ def usp(message):
     x = message.text.split()
     mycursor.execute("SELECT userid, name, surname FROM students WHERE class = %s AND litter = %s", (x[0], x[1]))
     result = mycursor.fetchall()
-    reply_message = "- Top stickers farmers:\n"
+    reply_message = "- All class:\n"
     for i in range(len(result)):
-        reply_message += f"{item[i][0]} {item[i][1]}) {item[i][2]}\n"
+        reply_message += f"{result[i][0]} {result[i][1]}) {result[i][2]}\n"
     bot.send_message(message.chat.id, reply_message)
     msg = bot.send_message(message.chat.id, "Введите id учеников которые отсутвовали на уроке через пробел")
     bot.register_next_step_handler(msg, progul)
