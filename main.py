@@ -137,7 +137,7 @@ def input_data_teacher(message):
         bot.register_next_step_handler(msg, input_data_teacher)
 
 def input_data_curator(message):
-    user_id = message.from_user.id
+    user_id = message.chat.id
     x = message.text.split()
     if len(x) == 5:
         mycursor.execute(f"INSERT INTO curators(curid, name, surname, fathername, shanyrak, email) VALUES({user_id}, '{x[0]}', '{x[1]}', '{x[2]}', '{x[3]}', '{x[4]}')")
