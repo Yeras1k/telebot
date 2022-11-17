@@ -22,7 +22,7 @@ mydb = mysql.connector.connect(
     password = "O53tgAfYAUfJUOTYaa6Y",
     database = "railway"
 )
-mycursor = mydb.cursor()
+mycursor = mydb.cursor(buffered=True)
 
 @bot.message_handler(commands=["start"])
 def first(message):
