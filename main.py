@@ -191,15 +191,17 @@ def usp(message):
 
 def progul(message):
     x = message.text.split()
-    a = mycursor.execute("SELECT curid FROM curators")
+    mycursor.execute("SELECT curid FROM curators")
+    a = mycursor.fetchall()
     allresult = []
     for i in range(len(x)):
         mycursor.execute(f"SELECT name, surname FROM students WHERE userid = {x[i]}")
         result = mycursor.fetchall()
         allresult.append(result)
-    for i in range(len(allresult)):
-        bot.send_message(message.chat.id, f"{allresult[i]}")
-    bot.send_message(a, "ОТСУТСВОВАЛИ")
+    for k in range(len(a)):
+        for j in range(len(allresult)):
+            bot.send_message(a[k], f"{allresult[j]}")
+        bot.send_message(a[k], "Отсутвуют")
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
