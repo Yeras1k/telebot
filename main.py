@@ -194,7 +194,7 @@ def progul(message):
     a = mycursor.execute("SELECT curid FROM curators")
     allresult = []
     for i in range(len(x)):
-        mycursor.execute("SELECT name, surname FROM students WHERE userid = %i", (x[i]))
+        mycursor.execute("SELECT name, surname FROM students WHERE userid = %s", (x[i]))
         result = mycursor.fetchall()
         allresult.append(result)
     for i in range(len(allresult)):
