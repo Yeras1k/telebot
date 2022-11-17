@@ -200,7 +200,6 @@ def progul(message):
     for k in range(len(a)):
         for t in range(len(a[k])):
             for j in range(len(allresult)):
-                bot.send_message(message.chat.id, f"{allresult[j]}")
                 bot.send_message(a[k][t], f"{allresult[j]}")
             bot.send_message(a[k][t], "Was not")
 
