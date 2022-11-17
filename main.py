@@ -198,10 +198,10 @@ def progul(message):
         mycursor.execute(f"SELECT name, surname FROM students WHERE userid = {x[i]}")
         result = mycursor.fetchall()
         allresult.append(result)
-    for k in range(len(a)):
-        for j in range(len(allresult)):
-            bot.send_message(a[k], f"{allresult[j]}")
-        bot.send_message(a[k], "Отсутвуют")
+    for j in range(len(allresult)):
+        bot.send_message(message.chat.id, f"{allresult[j]}")
+        bot.send_message(message.chat.id, f"{a[0]}")
+        bot.send_message(message.chat.id, f"{a[1]}")
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
