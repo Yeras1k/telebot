@@ -201,8 +201,8 @@ def progul(message):
     for k in range(len(a)):
         for j in range(len(allresult)):
             bot.send_message(message.chat.id, f"{allresult[j]}")
-            bot.send_message(int(a[k]), f"{allresult[j]}")
-        bot.send_message(int(a[k]), "Was not")
+            bot.send_message(a[k], f"{allresult[j]}")
+        bot.send_message(a[k], "Was not")
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
