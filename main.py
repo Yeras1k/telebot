@@ -179,7 +179,7 @@ def main_teacher(message):
 
 def usp(message):
     x = message.text.split()
-    mycursor.execute("SELECT userid, name, surname FROM students WHERE class = %i AND litter = %s", (x[0], x[1]))
+    mycursor.execute("SELECT userid, name, surname FROM students WHERE class = %d AND litter = %s", (x[0], x[1]))
     result = mycursor.fetchall()
     reply_message = "- Top stickers farmers:\n"
     for i in range(len(result)):
