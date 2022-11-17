@@ -6,7 +6,6 @@ from telebot import types
 from config import *
 from flask import Flask, request
 
-
 bot = telebot.TeleBot(BOT_TOKEN)
 server = Flask(__name__)
 logger = telebot.logger
@@ -202,7 +201,7 @@ def progul(message):
         for t in range(len(a[k])):
             for j in range(len(allresult)):
                 bot.send_message(a[k][t], f"{allresult[j]}")
-            bot.send_message(a[k][t], "Was not")
+            bot.send_message(a[k][t], "Отсутствуют на уроке ")
 
 def event(message):
     a = mycursor.execute("SELECT userid FROM students")
